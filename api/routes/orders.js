@@ -6,9 +6,20 @@ const mongoose = require('mongoose');
 const Order = require('../models/orders');
 
 router.get('/', (req,res,next)=>{
-   Order.find().exec()
+   Order.find().select('product quantity _id')
+   .exec()
    .then(docs=>{
-       res.status(200).json(docs);
+       res.status(200).json({
+
+        count : docs.length,
+        orders : docs.map(doc =>{
+            return {
+                _id : doc._id,
+                product : doc.productId,
+                quantity : doc.quantity  
+        }
+        })
+       });
    })
    .catch(err=>{
        res.status(500).json({
@@ -20,14 +31,19 @@ router.get('/', (req,res,next)=>{
 router.post('/', (req,res,next)=>{
   const order = new Order({
       _id : mongoose.Types.ObjectId(), 
-      quantity : req.body.quantity,
-      product : req.body.productId
+      product : req.body.productId,
+      quantity : req.body.quantity
+      
 
   });
   order.save()
   .then( result=>{
       console.log(result);
-      res.status(201).json(result);
+      res.status(201).json({
+          message : 'order createddd',
+          order : result,
+          productID : result.productId
+      });
   })
   .catch(err=> {
       console.log(err);
@@ -35,10 +51,7 @@ router.post('/', (req,res,next)=>{
           error : err
       });
   });
-    res.status(201).json({
-        message : 'order was created',
-        order : order
-    });
+    
 });
 
 router.get('/:orderId', (req,res,next)=>{
