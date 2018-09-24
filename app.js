@@ -2,11 +2,16 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+
+
+mongoose.connect('mongodb+srv://dralan:dralan@cluster0-ppzmx.mongodb.net/test?retryWrites=true',
+                    {useMongoClient:true});
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended:false}));
