@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const cors = require('cors');
+//const cors = require('cors');
 
 
 const productRoutes = require('./api/routes/products');
@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-app.use(cors());
+//app.use(cors());
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use((req,res,next)=>{
