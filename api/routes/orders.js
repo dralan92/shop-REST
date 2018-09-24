@@ -15,7 +15,8 @@ router.get('/', (req,res,next)=>{
         orders : docs.map(doc =>{
             return {
                 _id : doc._id,
-                product : doc.productId,
+                product : doc.product,
+                
                 quantity : doc.quantity  
         }
         })
